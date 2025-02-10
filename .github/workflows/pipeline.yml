@@ -1,0 +1,32 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkot@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build:ui
+      - name: test frontend
+        run: npm run test:client
+      - name: test backend
+        run: |
+          npm run start:test &
+          npx wait-on http://localhost:3003
+          npm run test
