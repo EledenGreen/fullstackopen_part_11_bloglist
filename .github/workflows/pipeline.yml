@@ -25,6 +25,8 @@ jobs:
         run: npm run build:ui
       - name: test frontend
         run: npm run test:client
+      - name: echo
+        run: echo "${{ secrets.PORT }}"
       - name: test backend
         run: |
           npm run start:test &
