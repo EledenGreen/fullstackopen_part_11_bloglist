@@ -2,6 +2,7 @@ name: Deployment pipeline
 
 env:
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+  PORT: ${{ secrets.PORT }}
 
 on:
   push:
