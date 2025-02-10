@@ -1,6 +1,8 @@
 name: Deployment pipeline
 
-env: TEST_MONGODB_URI = ${{ secrets.TEST_MONGODB_URI }}
+env:
+  TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+
 on:
   push:
     branches:
