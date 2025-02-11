@@ -4,6 +4,7 @@ env:
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
   PORT: ${{ secrets.PORT }}
   SECRET: ${{ secrets.SECRET }}
+  COMMIT_MESSAGES: ${{ join(toJson(github.event.commits.*.message), ', ') }}
 
 on:
   push:
@@ -35,3 +36,8 @@ jobs:
           npm run start:test &
           npx wait-on http://localhost:3003
           npm run test
+      - name: Trigger deployment
+        if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
+        run: |
+          echo "$COMMIT_MESSAGES"
+          curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
